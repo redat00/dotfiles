@@ -133,6 +133,10 @@ bindsym $mod+e layout toggle split
 # Make the current focus fullscreen
 bindsym $mod+f fullscreen
 
+# Disable FN + ArrowKeys = PgUp/PgDown
+bindcode 112 nop
+bindcode 117 nop
+
 bar {
     swaybar_command waybar
 }
