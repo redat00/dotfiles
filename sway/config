@@ -6,8 +6,10 @@ set $term wezterm
 set $menu /usr/bin/wofi --show=drun 
 set $lock swaylock -i $HOME/.config/sway/wallpaper.jpg
 
-# Include extra variables
-include /etc/sway/config-vars.d/*
+### Trick to make waybar show up
+
+# Force use of wayland display
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
 ### Theme
 
@@ -34,10 +36,6 @@ exec mako
 
 # Start nm-applet for applications that make use of it
 exec_always nm-applet --indicator
-
-# Start keyring
-exec eval $(gnome-keyring-daemon --start)
-exec export SSH_AUTH_SOCK
 
 ### Controls
 
@@ -79,9 +77,15 @@ bindsym $mod+Shift+c reload
 # Make screenshot to clipboard
 bindsym $mod+i exec wl-copy < $(grimshot save area)
 
+# Brightness control
+bindsym --locked XF86MonBrightnessUp exec --no-startup-id brightnessctl set +10%
+bindsym --locked XF86MonBrightnessDown exec --no-startup-id brightnessctl set 10%-
+
 # Audio Control
-bindsym --locked XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume $(pacmd list-sinks |awk '/* index:/{print $3}') +5%
-bindsym --locked XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume $(pacmd list-sinks |awk '/* index:/{print $3}') -5%
+bindsym --locked XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym --locked XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym --locked XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym --locked XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
 
 # Move between windows
 bindsym $mod+Left focus left
@@ -140,6 +144,4 @@ bindcode 117 nop
 bar {
     swaybar_command waybar
 }
-
-include /etc/sway/config.d/*
 
