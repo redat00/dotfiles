@@ -4,7 +4,7 @@
 set $mod Mod4
 set $term wezterm
 set $menu /usr/bin/wofi --show=drun 
-set $lock swaylock -i $HOME/.config/sway/wallpaper.jpg
+set $lock $HOME/.config/sway/lock.sh
 
 ### Trick to make waybar show up
 
@@ -47,15 +47,6 @@ mouse_warping container
 
 # Set compose key to right alt
 input * xkb_options compose:ralt
-
-### Lock screen
-
-# Configure swaylock
-exec swayidle -w \
-    timeout 600 $lock \
-    timeout 570 'swaymsg "output * dpms off"' \
-    resume 'swaymsg "output * dpms on"' \
-    before-sleep $lock
 
 ### Key bindings
 
